@@ -127,10 +127,12 @@ class TestStreaming:
 
     def test_responds_to_update_calls(self, db_sa):
         with make_append_stream(db_sa()) as (stream, l):
+            time.sleep(2)
+            assert len(l) == 1
+
             db_sa().set({"1": "a", "1_2": "b"})
             db_sa().update({"2": "c"})
             db_sa().push("3")
 
             time.sleep(2)
-
-            assert len(l) == 3
+            assert len(l) == 4
